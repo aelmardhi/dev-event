@@ -30,11 +30,25 @@ export async function POST( req: NextRequest){
         });
 
         event.image = (uploadResult as {secure_url: string} ).secure_url
-        
+
         const createdEvent = await Event.create(event);
         return NextResponse.json({message: 'Event created successfully', event: createdEvent}, {status: 201})
     }catch (e){
         console.error(e);
         return NextResponse.json({message: 'Event Creation Failed',error: e instanceof Error? e.message: "Unknown"},  {status: 500})
+    }
+}
+
+export async function GET () {
+    try {
+        await connectDB();
+        const events = await Event.find().sort({createdAt: -1});
+
+        return NextResponse.json({ message: 'Events fetched successfully', events}, {status: 200})
+        
+    } catch (e) {
+        console.log(e);
+        
+        return NextResponse.json({message: 'Events fetching failed', error: e}, {status: 500})
     }
 }
