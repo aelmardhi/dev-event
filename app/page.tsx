@@ -9,7 +9,7 @@ const Home = async () => {
 
   
   const response = await fetch(`${BASE_URL}/api/events`);
-  const events = await response.json();
+  const {events} = await response.json();
 
   return (
     <section>
@@ -22,7 +22,7 @@ const Home = async () => {
 
         <ul className="events">
           {events && events.length > 0 && events.map((event: IEvent)=>(
-            <li key={event.title}>
+            <li key={event.title} className="list-none">
               <EventCard {...event}/>
             </li>
           ))}
